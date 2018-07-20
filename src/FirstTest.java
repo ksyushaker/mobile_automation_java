@@ -100,6 +100,13 @@ public class FirstTest {
                 5
         );
 
+        assertTextInFieldPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search…",
+                "Cannot find search input default text",
+                5
+        );
+
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text, 'Search…')]"),
                 "Java",
@@ -169,5 +176,17 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
         return element;
+    }
+
+    private boolean assertTextInFieldPresent(By by, String value, String error_message, long timeoutInSeconds) {
+
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+               String element_text_value = element.getAttribute("text");
+               Assert.assertEquals(
+                       "We see unexpected field text",
+                       value,
+                       element_text_value
+               );
+        return true;
     }
 }
