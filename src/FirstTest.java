@@ -5,12 +5,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
+import java.util.function.Function;
 
 public class FirstTest {
 
@@ -134,6 +137,45 @@ public class FirstTest {
                 article_text);
     }
 
+    @Test
+    public void testSearching() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Russia",
+                "Cannot find search input",
+                5
+        );
+
+        int search_items_count = findElementsAndCount(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][contains(@text, 'Russia')]"),
+                "Cannot find article title",
+                15
+        );
+
+        Assert.assertTrue(
+                "We see unexpected search results",
+                search_items_count != 0
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("//*[@resource-id='org.wikipedia:id/page_list_item_title'][contains(@text, 'Russia')]"),
+                "Search not canceled",
+                5
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -181,12 +223,21 @@ public class FirstTest {
     private boolean assertTextInFieldPresent(By by, String value, String error_message, long timeoutInSeconds) {
 
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-               String element_text_value = element.getAttribute("text");
-               Assert.assertEquals(
-                       "We see unexpected field text",
-                       value,
-                       element_text_value
-               );
+        String element_text_value = element.getAttribute("text");
+        Assert.assertEquals(
+                "We see unexpected field text",
+                value,
+                element_text_value
+        );
         return true;
     }
+
+    private int findElementsAndCount(By by, String error_message, long timeoutInSeconds) {
+
+        waitForElementPresent(by, error_message, timeoutInSeconds);
+        List<WebElement> item_list = driver.findElements(by);
+        int items_list_count = item_list.size();
+        return items_list_count;
+    }
+
 }
