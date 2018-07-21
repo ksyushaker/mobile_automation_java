@@ -22,8 +22,8 @@
       <file leaf-file-name="FirstTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FirstTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="146" lean-forward="true" selection-start-line="146" selection-end-line="146" />
+            <state relative-caret-position="225">
+              <caret line="162" column="36" selection-start-line="162" selection-start-column="36" selection-end-line="162" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -260,34 +260,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FirstTest_testCompareArticleTitle - 2018.07.21 at 03h 01m 06s.xml">
-      <configuration name="FirstTest.testCompareArticleTitle" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 36m 58s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 00m 18s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 37m 37s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 01m 00s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 40m 08s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 02m 39s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 40m 45s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 03m 53s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 44m 02s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 04m 17s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 48m 19s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 05m 05s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 48m 45s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 05m 29s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 49m 21s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 13m 41s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FirstTest_testSearching - 2018.07.21 at 03h 50m 38s.xml">
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 14m 06s.xml">
+      <configuration name="FirstTest.testSearching" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testSearching - 2018.07.21 at 04h 14m 35s.xml">
       <configuration name="FirstTest.testSearching" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -422,8 +422,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FirstTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="146" lean-forward="true" selection-start-line="146" selection-end-line="146" />
+        <state relative-caret-position="225">
+          <caret line="162" column="36" selection-start-line="162" selection-start-column="36" selection-end-line="162" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
