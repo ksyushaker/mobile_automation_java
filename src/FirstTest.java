@@ -174,6 +174,40 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearching() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Russia",
+                "Cannot find search input",
+                5
+        );
+
+        int search_items_count = findElementsAndCount(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Cannot find article title",
+                15
+        );
+
+        int search_items_with_value_count = findElementsAndCount(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][contains(@text, 'Russia')]"),
+                "Cannot find article title with search value",
+                5
+        );
+
+        Assert.assertTrue(
+                "Search items not equal search value",
+                search_items_count == search_items_with_value_count
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
 
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
