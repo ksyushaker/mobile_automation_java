@@ -175,7 +175,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearching() {
+    public void testSearchingResults() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
                 "Cannot find 'Search Wikipedia' input",
@@ -190,20 +190,21 @@ public class FirstTest {
         );
 
         int search_items_count = findElementsAndCount(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                By.id("org.wikipedia:id/page_list_item_title"),
                 "Cannot find article title",
                 15
         );
 
-        int search_items_with_value_count = findElementsAndCount(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][contains(@text, 'Russia')]"),
-                "Cannot find article title with search value",
-                5
+        int search_results_without_value = findElementsAndCountNotContainsText(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "There is no search value in line ",
+                search_items_count,
+                "Russia"
         );
 
         Assert.assertTrue(
-                "Search items not equal search value",
-                search_items_count == search_items_with_value_count
+                "We see no search value in some search results",
+                search_results_without_value == 0
         );
 
     }
@@ -270,6 +271,20 @@ public class FirstTest {
         List<WebElement> item_list = driver.findElements(by);
         int items_list_count = item_list.size();
         return items_list_count;
+    }
+
+    private int findElementsAndCountNotContainsText(By by, String error_message, int count, String value) {
+
+        int countElements = 0;
+        for (int i = 0; i < count; i++) {
+            WebElement elementIndex = (WebElement) driver.findElements(by).get(i);
+            String elementText = elementIndex.getText();
+            if (!elementText.contains(value)) {
+                System.out.println(error_message + i);
+                countElements++;
+            }
+        }
+        return countElements;
     }
 
 }
