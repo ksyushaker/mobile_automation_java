@@ -206,7 +206,7 @@ public class FirstTest {
         );
 
         Assert.assertTrue(
-                "We see no search value in some search results",
+                "We see no search value in search results",
                 search_results_without_value == 0
         );
 
