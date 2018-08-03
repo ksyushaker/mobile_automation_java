@@ -141,4 +141,56 @@ public class MainPageObject {
         return element.getAttribute(attribute);
     }
 
+
+    public void assertElementNotPresent(By by, String error_message) {
+        int amount_of_elements = getAnountOfElements(by);
+        if (amount_of_elements > 0) {
+            String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
+    }
+
+
+    public int findElementsAndCountNotContainsText(By by, String error_message, int count, String value) {
+
+        int countElements = 0;
+        for (int i = 0; i < count; i++) {
+            WebElement elementIndex = (WebElement) driver.findElements(by).get(i);
+            String elementText = elementIndex.getText();
+            if (!elementText.contains(value)) {
+                System.out.println(error_message + i);
+                countElements++;
+            }
+        }
+        return countElements;
+    }
+
+    public int findElementsAndCount(By by, String error_message, long timeoutInSeconds) {
+
+        waitForElementPresent(by, error_message, timeoutInSeconds);
+        List<WebElement> item_list = driver.findElements(by);
+        int items_list_count = item_list.size();
+        return items_list_count;
+    }
+
+    public boolean assertTextInFieldPresent(By by, String value, String error_message, long timeoutInSeconds) {
+
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        String element_text_value = element.getAttribute("text");
+        Assert.assertEquals(
+                "We see unexpected field text",
+                value,
+                element_text_value
+        );
+        return true;
+    }
+
+    public WebElement waitForElementRefreshed(By by, String error_message, long timeoutInSeconds) {
+
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.refreshed(ExpectedConditions.presenceOfElementLocated(by))
+        );
+    }
 }
