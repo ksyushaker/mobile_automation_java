@@ -6,7 +6,6 @@ import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -83,5 +82,4 @@ public class MyListsTests extends CoreTestCase {
                 title_not_deleted_article
         );
     }
-
 }
