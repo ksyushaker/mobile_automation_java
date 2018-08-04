@@ -308,8 +308,11 @@ public class FirstTest extends CoreTestCase {
                 5
         );
 
-        Assert.assertTrue("Cannot find not deleted article",
-                driver.getPageSource().contains(title_second_article));
+        MainPageObject.waitForElementPresent(
+                By.xpath("//*[@text='" + title_second_article + "']"),
+                "Cannot find not deleted article",
+                5
+        );
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='" + title_second_article + "']"),
