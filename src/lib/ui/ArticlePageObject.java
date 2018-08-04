@@ -14,11 +14,18 @@ public class ArticlePageObject extends MainPageObject {
             ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
             MY_LIST_INPUT = "org.wikipedia:id/text_input",
             MY_LIST_OK_BUTTON = "//*[@text='OK']",
-            CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+            CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+            NAME_OF_FOLDER_TO_ADD_TPL = "//*[@resource-id='org.wikipedia:id/item_title'][@text='{FOLDER_NAME}']";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
     }
+
+    /* TEMPLATES METHODS */
+    private static String getFolderToAddName(String substring) {
+        return NAME_OF_FOLDER_TO_ADD_TPL.replace("{FOLDER_NAME}", substring);
+    }
+    /* TEMPLATES METHODS */
 
     public WebElement waitForTitleElement() {
         return this.waitForElementPresent(By.id(TITLE), "Cannot find article title on page", 15);
@@ -29,11 +36,15 @@ public class ArticlePageObject extends MainPageObject {
         return title_element.getAttribute("text");
     }
 
+    public void assertArticleTitle() {
+        this.assertElementPresent(By.id(TITLE), "The article title hasn't appeared yet");
+    }
+
     public void swipeUpToFooter() {
         this.swipeUpToFindElement(By.xpath(FOOTER_ELEMENT), "Cannot find the end of the article", 20);
     }
 
-    public void addArticleToMyList(String name_of_folder) {
+    public void addArticleToMyList(String name_of_folder, boolean first_article) {
 
         this.waitForElementAndClick(
                 By.xpath(OPTIONS_BUTTON),
@@ -47,30 +58,41 @@ public class ArticlePageObject extends MainPageObject {
                 5
         );
 
-        this.waitForElementAndClick(
-                By.id(ADD_TO_MY_LIST_OVERLAY),
-                "Cannot find 'Got it' tip overlay",
-                5
-        );
+        if (first_article == true)
+        {
+            this.waitForElementAndClick(
+                    By.id(ADD_TO_MY_LIST_OVERLAY),
+                    "Cannot find 'Got it' tip overlay",
+                    5
+            );
 
-        this.waitForElementAndClear(
-                By.id(MY_LIST_INPUT),
-                "Cannot find input to set name of articles folder",
-                5
-        );
+            this.waitForElementAndClear(
+                    By.id(MY_LIST_INPUT),
+                    "Cannot find input to set name of articles folder",
+                    5
+            );
 
-        this.waitForElementAndSendKeys(
-                By.id(MY_LIST_INPUT),
-                name_of_folder,
-                "Cannot put text into articles folder input",
-                5
-        );
+            this.waitForElementAndSendKeys(
+                    By.id(MY_LIST_INPUT),
+                    name_of_folder,
+                    "Cannot put text into articles folder input",
+                    5
+            );
 
-        this.waitForElementAndClick(
-                By.xpath(MY_LIST_OK_BUTTON),
-                "Cannot press OK button",
-                5
-        );
+            this.waitForElementAndClick(
+                    By.xpath(MY_LIST_OK_BUTTON),
+                    "Cannot press OK button",
+                    5
+            );
+        }  else {
+
+            String folder_name_xpath = getFolderToAddName(name_of_folder);
+            this.waitForElementAndClick(
+                    By.xpath(folder_name_xpath),
+                    "Cannot find saved folder in overlay",
+                    5
+            );
+        }
     }
 
     public void closeArticle() {

@@ -31,7 +31,7 @@ public class SearchTests extends CoreTestCase {
 
         String search_line = "Linkin Park Discography";
         searchPageObject.typeSearchLine(search_line);
-        int amount_of_search_results = searchPageObject.getAmounOfFoundArticles();
+        int amount_of_search_results = searchPageObject.getAmountOfFoundArticles();
 
         assertTrue(
                 "We found too few results",
@@ -47,5 +47,24 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.typeSearchLine(search_line);
         searchPageObject.waitForEmptyResultsLabel();
         searchPageObject.assertThereIsNoResultsOfSearch();
+    }
+
+    //ex3
+    @Test
+    public void testCountSearchResultsAndCancel() {
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        String search_line = "Russia";
+        searchPageObject.typeSearchLine(search_line);
+        int search_items_count = searchPageObject.getAmountOfFoundArticlesWithTextRequest(search_line);
+
+        assertTrue(
+                "We see unexpected search results",
+                search_items_count != 0
+        );
+
+        searchPageObject.clickCancelSearch();
+        searchPageObject.waitForNoSearchValueText();
+        searchPageObject.assertNoResultsAfterSearchCancel(search_line);
     }
 }

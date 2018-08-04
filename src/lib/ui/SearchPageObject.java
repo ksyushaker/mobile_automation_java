@@ -11,7 +11,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_EMPTY_RESULTS_ELEMENT = "//*[@text='No results found']";
+            SEARCH_EMPTY_RESULTS_ELEMENT = "//*[@text='No results found']",
+            SEARCH_RESULT_WITH_TEXT_VALUE_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_title'][contains(@text, '{SEARCHVALUE}')]",
+            SEARCH_BEGIN_TEXT = "//*[@text='Search and read the free encyclopedia in your language']";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -20,6 +22,10 @@ public class SearchPageObject extends MainPageObject {
     /* TEMPLATES METHODS */
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getResultSearchWithTextValueElement(String substring) {
+        return SEARCH_RESULT_WITH_TEXT_VALUE_TPL.replace("{SEARCHVALUE}", substring);
     }
     /* TEMPLATES METHODS */
 
@@ -54,7 +60,7 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(By.xpath(search_result_xpath), "Cannot find and click search result with substring " + substring, 10);
     }
 
-    public int getAmounOfFoundArticles() {
+    public int getAmountOfFoundArticles() {
         this.waitForElementPresent(
                 By.xpath(SEARCH_RESULT_ELEMENT),
                 "Cannot find anything by request",
@@ -63,6 +69,22 @@ public class SearchPageObject extends MainPageObject {
 
         return this.getAnountOfElements(
                 By.xpath(SEARCH_RESULT_ELEMENT));
+    }
+
+
+    public int getAmountOfFoundArticlesWithTextRequest(String search_value) {
+
+        String search_result_xpath = getResultSearchWithTextValueElement(search_value);
+        this.waitForElementPresent(
+                By.xpath(search_result_xpath),
+                "Cannot find anything by text value request " + search_value,
+                15
+        );
+
+        return this.findElementsAndCount(
+                By.xpath(search_result_xpath),
+                "Cannot find article with search value " + search_value,
+                15);
     }
 
     public void waitForEmptyResultsLabel() {
@@ -74,8 +96,25 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void assertThereIsNoResultsOfSearch(){
+    public void waitForNoSearchValueText() {
+
+        this.waitForElementPresent(
+                By.xpath(SEARCH_BEGIN_TEXT),
+                "Cannot find no results before searching text",
+                15
+        );
+    }
+
+    public void assertThereIsNoResultsOfSearch() {
         this.waitForElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT),
+                "We supposed not to find any results of search",
+                10);
+    }
+
+    public void assertNoResultsAfterSearchCancel(String search_value) {
+
+        String search_result_xpath = getResultSearchWithTextValueElement(search_value);
+        this.waitForElementNotPresent(By.xpath(search_result_xpath),
                 "We supposed not to find any results of search",
                 10);
     }

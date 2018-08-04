@@ -10,6 +10,7 @@ public class MyListsPageObject extends MainPageObject {
             ARTICLE_BY_TITLE_TMP = "//*[@text='{ARTICLE_TITLE}']",
             FOLDER_DESCRIPTION_TEXT_BLOCK = "org.wikipedia:id/item_reading_list_statistical_description";
 
+    /* TEMPLATES METHODS */
     private static String getFolderXpathByName(String name_of_folder) {
         return FOLDER_BY_NAME_TMP.replace("{FOLDER_NAME}", name_of_folder);
     }
@@ -17,6 +18,7 @@ public class MyListsPageObject extends MainPageObject {
     private static String getSavedArticleXpathByTitle(String article_title) {
         return ARTICLE_BY_TITLE_TMP.replace("{ARTICLE_TITLE}", article_title);
     }
+    /* TEMPLATES METHODS */
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -48,9 +50,9 @@ public class MyListsPageObject extends MainPageObject {
     }
 
     public void waitForArticleToDisappearByTitle(String article_title) {
-        String article_title__xpath = getSavedArticleXpathByTitle(article_title);
+        String article_title_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementNotPresent(
-                By.xpath(article_title__xpath),
+                By.xpath(article_title_xpath),
                 "Saved article still present with title " + article_title,
                 15
         );
@@ -66,4 +68,10 @@ public class MyListsPageObject extends MainPageObject {
 
         waitForArticleToDisappearByTitle(article_title);
     }
+
+    public void clickByArticleInFolder(String article_name){
+        String article_in_folder_xpath = getSavedArticleXpathByTitle(article_name);
+        this.waitForElementAndClick(By.xpath(article_in_folder_xpath), "Cannot find title of not deleted article", 5);
+    }
+
 }

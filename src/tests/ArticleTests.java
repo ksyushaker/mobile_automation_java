@@ -4,6 +4,7 @@ import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase {
     @Test
@@ -33,5 +34,18 @@ public class ArticleTests extends CoreTestCase {
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
         articlePageObject.waitForTitleElement();
         articlePageObject.swipeUpToFooter();
+    }
+
+    //ex6
+    @Test
+    public void testAssertTitle() {
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Android");
+        searchPageObject.clickByArticleWithSubstring("Android (operating system)");
+
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        articlePageObject.assertArticleTitle();
     }
 }
