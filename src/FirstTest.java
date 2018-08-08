@@ -49,7 +49,6 @@ public class FirstTest extends CoreTestCase {
 
     }
 
-
     @Test
     public void testSwipeArticle() {
         MainPageObject.waitForElementAndClick(
@@ -84,10 +83,5 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.swipeUp(2000);
 
     }
-
-
-
-
-
 
 }
