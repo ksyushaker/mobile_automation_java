@@ -80,5 +80,4 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.swipeUp(2000);
         MainPageObject.swipeUp(2000);
     }
-
 }
