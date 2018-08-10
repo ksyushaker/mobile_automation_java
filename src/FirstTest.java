@@ -79,9 +79,6 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.swipeUp(2000); //чем больше поставить времени, тем дольше будет идти свайп
         MainPageObject.swipeUp(2000);
         MainPageObject.swipeUp(2000);
-        MainPageObject.swipeUp(2000);
-        MainPageObject.swipeUp(2000);
-
     }
 
 }
