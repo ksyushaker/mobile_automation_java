@@ -1,14 +1,13 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class MyListsPageObject extends MainPageObject {
 
     public static final String
-            FOLDER_BY_NAME_TMP = "//*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TMP = "//*[@text='{ARTICLE_TITLE}']",
-            FOLDER_DESCRIPTION_TEXT_BLOCK = "org.wikipedia:id/item_reading_list_statistical_description";
+            FOLDER_BY_NAME_TMP = "xpath://*[@text='{FOLDER_NAME}']",
+            ARTICLE_BY_TITLE_TMP = "xpath://*[@text='{ARTICLE_TITLE}']",
+            FOLDER_DESCRIPTION_TEXT_BLOCK = "id:org.wikipedia:id/item_reading_list_statistical_description";
 
     /* TEMPLATES METHODS */
     private static String getFolderXpathByName(String name_of_folder) {
@@ -28,13 +27,13 @@ public class MyListsPageObject extends MainPageObject {
 
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementRefreshed(
-                By.id(FOLDER_DESCRIPTION_TEXT_BLOCK),
+                FOLDER_DESCRIPTION_TEXT_BLOCK,
                 "Cannot find description by folder " + name_of_folder,
                 15
         );
 
         this.waitForElementAndClick(
-                By.xpath(folder_name_xpath),
+                folder_name_xpath,
                 "Cannot find folder by name " + name_of_folder,
                 15
         );
@@ -43,7 +42,7 @@ public class MyListsPageObject extends MainPageObject {
     public void waitForArticleToAppearByTitle(String article_title) {
         String article_title__xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementPresent(
-                By.xpath(article_title__xpath),
+                article_title__xpath,
                 "Cannot find saved article by title " + article_title,
                 15
         );
@@ -52,7 +51,7 @@ public class MyListsPageObject extends MainPageObject {
     public void waitForArticleToDisappearByTitle(String article_title) {
         String article_title_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementNotPresent(
-                By.xpath(article_title_xpath),
+                article_title_xpath,
                 "Saved article still present with title " + article_title,
                 15
         );
@@ -62,7 +61,7 @@ public class MyListsPageObject extends MainPageObject {
         waitForArticleToAppearByTitle(article_title);
         String article_title__xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(
-                By.xpath(article_title__xpath),
+                article_title__xpath,
                 "Cannot find saved article"
         );
 
@@ -71,7 +70,6 @@ public class MyListsPageObject extends MainPageObject {
 
     public void clickByArticleInFolder(String article_name){
         String article_in_folder_xpath = getSavedArticleXpathByTitle(article_name);
-        this.waitForElementAndClick(By.xpath(article_in_folder_xpath), "Cannot find title of not deleted article", 5);
+        this.waitForElementAndClick(article_in_folder_xpath, "Cannot find title of not deleted article", 5);
     }
-
 }

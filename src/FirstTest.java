@@ -1,8 +1,5 @@
 import lib.CoreTestCase;
-import lib.ui.*;
-import org.junit.Assert;
-import org.junit.Test;
-import org.openqa.selenium.By;
+import lib.ui.MainPageObject;
 
 public class FirstTest extends CoreTestCase {
 
@@ -13,7 +10,7 @@ public class FirstTest extends CoreTestCase {
 
         MainPageObject = new MainPageObject(driver);
     }
-
+/*
     @Test
     public void testSearchingResults() {
         MainPageObject.waitForElementAndClick(
@@ -79,5 +76,5 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.swipeUp(2000); //чем больше поставить времени, тем дольше будет идти свайп
         MainPageObject.swipeUp(2000);
         MainPageObject.swipeUp(2000);
-    }
+    }*/
 }
