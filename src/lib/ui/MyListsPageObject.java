@@ -1,13 +1,14 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject {
+abstract public class MyListsPageObject extends MainPageObject {
 
-    public static final String
-            FOLDER_BY_NAME_TMP = "xpath://*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TMP = "xpath://*[@text='{ARTICLE_TITLE}']",
-            FOLDER_DESCRIPTION_TEXT_BLOCK = "id:org.wikipedia:id/item_reading_list_statistical_description";
+    protected static String
+            FOLDER_BY_NAME_TMP,
+            ARTICLE_BY_TITLE_TMP,
+            FOLDER_DESCRIPTION_TEXT_BLOCK;
 
     /* TEMPLATES METHODS */
     private static String getFolderXpathByName(String name_of_folder) {
@@ -58,17 +59,20 @@ public class MyListsPageObject extends MainPageObject {
     }
 
     public void swipeByArticleToDelete(String article_title) {
-        waitForArticleToAppearByTitle(article_title);
+        this.waitForArticleToAppearByTitle(article_title);
         String article_title__xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(
                 article_title__xpath,
                 "Cannot find saved article"
         );
 
-        waitForArticleToDisappearByTitle(article_title);
+        if (Platform.getInstance().isIOS()) {
+            this.clickElementToTheRightUpperCorner(article_title__xpath, "Cannot find saved article");
+        }
+        this.waitForArticleToDisappearByTitle(article_title);
     }
 
-    public void clickByArticleInFolder(String article_name){
+    public void clickByArticleInFolder(String article_name) {
         String article_in_folder_xpath = getSavedArticleXpathByTitle(article_name);
         this.waitForElementAndClick(article_in_folder_xpath, "Cannot find title of not deleted article", 5);
     }

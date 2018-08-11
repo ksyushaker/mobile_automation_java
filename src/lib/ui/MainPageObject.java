@@ -1,5 +1,6 @@
 package lib.ui;
 
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -85,6 +86,28 @@ public class MainPageObject {
                 .perform(); //метод perform() передает всю команду на исполнение
     }
 
+    //пока переменная element_location_by_y будет больше, чем размер экрана, по высоте, мы будем возвращать false
+    //но как только доскроллим до этой переменнй, мы вернем true
+    public boolean isElementLocatedOnTheScreen(String locator) {
+        int element_location_by_y = this.waitForElementPresent(locator, "Cannot find element by locator", 1)
+                .getLocation()
+                .getY();
+        int screen_size_by_y = driver.manage().window().getSize().getHeight();
+        return element_location_by_y < screen_size_by_y;
+    }
+
+    public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes) {
+        int already_swiped = 0;
+        while (!this.isElementLocatedOnTheScreen(locator)) {
+            if (already_swiped > max_swipes) {
+                Assert.assertTrue(error_message, this.isElementLocatedOnTheScreen(locator));
+            }
+
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
+
     public void swipeUpQuick() {
 
         swipeUp(200);
@@ -117,12 +140,32 @@ public class MainPageObject {
         int middle_y = (upper_y + lower_y) / 2;
 
         TouchAction action = new TouchAction(driver);
-        action
-                .press(right_x, middle_y)
-                .waitAction(300)
-                .moveTo(left_x, middle_y)
-                .release()
-                .perform();
+        action.press(right_x, middle_y).waitAction(300);
+        if (Platform.getInstance().isAndroid()) {
+            action.moveTo(left_x, middle_y);
+        } else {
+            int offset_x = (-1 * element.getSize().getWidth()); //эта точка на всю ширину элемента левее
+            action.moveTo(offset_x, 0);
+        }
+
+
+        action.release();
+        action.perform();
+    }
+
+    public void clickElementToTheRightUpperCorner(String locator, String error_message) {
+        WebElement element = this.waitForElementPresent(locator + "/..", error_message);
+        int right_x = element.getLocation().getX();
+        int upper_y = element.getLocation().getY();
+        int lower_y = upper_y + element.getSize().getHeight();
+        int middle_y = (upper_y + lower_y) / 2;
+        int width = element.getSize().getWidth();
+
+        int point_to_click_x = (right_x + width) - 3; //эта точка на 3 пикселя левее, чем ширина экрана
+        int point_to_click_y = middle_y;
+
+        TouchAction action = new TouchAction(driver);
+        action.tap(point_to_click_x, point_to_click_y).perform();
     }
 
     public int getAnountOfElements(String locator) {
