@@ -15,23 +15,35 @@ public class Platform {
             PLATFORM_ANDROID = "android",
             APPIUM_URL = "http://127.0.0.1:4723/wd/hub";
 
-    public AppiumDriver getDriver() throws Exception{
+    private static Platform instance; //превратим класс Platform в синглтон - чтобы объект класса создавался только один раз и хранился на протяжении всего выполнения кода
+    //в одном из полей класса, при этом вне класса создать instance не возможно засчет приватного коструктора
+
+    private Platform() {
+    } //приватный конструктор
+
+    public static Platform getInstance() {  //для вызова Platform
+        if (instance == null) {
+            instance = new Platform();
+        }
+        return instance;
+    }
+
+    public AppiumDriver getDriver() throws Exception {
         URL URL = new URL(APPIUM_URL);
-        if (this.isAndroid()){
+        if (this.isAndroid()) {
             return new AndroidDriver(URL, this.getAndroidDesiredCapabilities());
-        } else if (this.isIOS())
-        {
+        } else if (this.isIOS()) {
             return new IOSDriver(URL, this.getIOSDesiredCapabilities());
         } else {
             throw new Exception("Cannot detect type of the driver. Platform value: " + this.getPlatformVar());
         }
     }
 
-    public boolean isAndroid(){
+    public boolean isAndroid() {
         return isPlatform(PLATFORM_ANDROID);
     }
 
-    public boolean isIOS(){
+    public boolean isIOS() {
         return isPlatform(PLATFORM_IOS);
     }
 
@@ -43,7 +55,7 @@ public class Platform {
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
-        capabilities.setCapability("app", "/Users/arman/appium/mobile_automation_java/apks/org.wikipedia.apk");
+        capabilities.setCapability("app", "D:\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
         return capabilities;
     }
 
@@ -56,12 +68,12 @@ public class Platform {
         return capabilities;
     }
 
-    private boolean isPlatform(String my_platform){
+    private boolean isPlatform(String my_platform) {
         String platform = this.getPlatformVar();
         return my_platform.equals(platform);
     }
 
-    private String getPlatformVar(){
+    private String getPlatformVar() {
         return System.getenv("PLATFORM");
     }
 }

@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
@@ -9,7 +10,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch() {  //чтобы jUnit видел этот тест - иначе (если он не будет называться со слова test) jUnit его не сможет запусить
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.waitForSearchResult("Object-oriented programming language");
@@ -17,7 +18,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.waitForCancelButtonToAppear();
         searchPageObject.clickCancelSearch();
@@ -26,7 +27,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
 
         String search_line = "Linkin Park Discography";
@@ -40,7 +41,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
 
         String search_line = "zxcvbnasd";
@@ -52,7 +53,7 @@ public class SearchTests extends CoreTestCase {
     //ex3
     @Test
     public void testCountSearchResultsAndCancel() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String search_line = "Russia";
         searchPageObject.typeSearchLine(search_line);

@@ -1,5 +1,6 @@
 package tests;
 
+import lib.Platform;
 import org.junit.Test;
 
 import lib.CoreTestCase;
@@ -9,8 +10,8 @@ public class GetStartedTest extends CoreTestCase {
 
     @Test
     public void testPassThroughWelcome() {
-        if (this.Platform.isAndroid()){
-            return; // если платформа Android, тест завершается (т/к/ этого функционала в приложении нет в версии под Android)
+        if (Platform.getInstance().isAndroid()){
+            return; // если платформа Android, тест завершается (т.к. этого функционала в приложении нет в версии под Android)
         }
 
         WelcomePageObject welcomePage = new WelcomePageObject(driver);
