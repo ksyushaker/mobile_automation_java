@@ -52,11 +52,6 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
-    public void webView() {
-        //String webContext = this.getWebContext();
-        //driver.context(webContext);
-    }
-
     public void assertArticleTitle() {
         this.assertElementPresent(TITLE, "The article title hasn't appeared yet");
     }
