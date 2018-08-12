@@ -1,10 +1,11 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
 abstract public class SearchPageObject extends MainPageObject {
 
-  protected static String
+    protected static String
             SEARCH_INIT_ELEMENT,
             SEARCH_INPUT,
             SEARCH_CANCEL_BUTTON,
@@ -46,7 +47,18 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void typeSearchLine(String search_line) {
-        this.waitForElementAndSendKeys(SEARCH_INPUT, search_line, "Cannod find and type into search input", 5);
+        if (Platform.getInstance().isAndroid()) {
+            this.waitForElementAndSendKeys(SEARCH_INPUT,
+                    search_line,
+                    "Cannot find and type into search input", 5);
+        } else {
+            this.waitForElementAndClear(SEARCH_INPUT,
+                    "Cannot find and type into search input",
+                    5);
+            this.waitForElementAndSendKeys(SEARCH_INPUT,
+                    search_line,
+                    "Cannot find and type into search input", 5);
+        }
     }
 
     public void waitForSearchResult(String substring) {

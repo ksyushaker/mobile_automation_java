@@ -1,14 +1,15 @@
 package lib.ui;
 
-import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
 abstract public class ArticlePageObject extends MainPageObject {
 
     protected static String
             TITLE,
+            TITLE_TPL,
             FOOTER_ELEMENT,
             OPTIONS_BUTTON,
             OPTIONS_ADD_TO_MY_LIST_BUTTON,
@@ -26,10 +27,20 @@ abstract public class ArticlePageObject extends MainPageObject {
     private static String getFolderToAddName(String substring) {
         return NAME_OF_FOLDER_TO_ADD_TPL.replace("{FOLDER_NAME}", substring);
     }
+
+    public static String getArticleText(String title_text) {
+        return TITLE_TPL.replace("{search_text}", title_text);
+    }
     /* TEMPLATES METHODS */
 
     public WebElement waitForTitleElement() {
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
+    }
+
+    public WebElement waitForTitleOnIOS(String title) {
+
+        String title_locator = getArticleText(title);
+        return this.waitForElementPresent(title_locator, "Cannot find article title on page", 15);
     }
 
     public String getArticleTitle() {
@@ -39,6 +50,11 @@ abstract public class ArticlePageObject extends MainPageObject {
         } else {
             return title_element.getAttribute("name");
         }
+    }
+
+    public void webView() {
+        //String webContext = this.getWebContext();
+        //driver.context(webContext);
     }
 
     public void assertArticleTitle() {
@@ -119,6 +135,14 @@ abstract public class ArticlePageObject extends MainPageObject {
                 "Cannot close article, cannot find X link",
                 5
         );
+    }
+
+    public void closeSyncAlert() {
+        this.waitForElementAndClick(
+                CLOSE_ARTICLE_BUTTON,
+                "Cannot close sync alert",
+                10
+                );
     }
 }
 

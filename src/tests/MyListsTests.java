@@ -1,5 +1,7 @@
 package tests;
 
+import org.junit.Test;
+
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
@@ -10,7 +12,6 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
-import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -50,52 +51,57 @@ public class MyListsTests extends CoreTestCase {
     //ex5
     @Test
     public void testTwoArticlesSaving() {
-
+        String first_article = "Android (operating system)";
+        String second_article = "Appium";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
-        String search_first_article = "Android";
-        searchPageObject.typeSearchLine(search_first_article);
-        searchPageObject.clickByArticleWithSubstring("Android (operating system)");
+        searchPageObject.typeSearchLine("Android");
+        searchPageObject.clickByArticleWithSubstring(first_article);
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
-        articlePageObject.waitForTitleElement();
-
-        String title_first_article = articlePageObject.getArticleTitle();
-        String name_of_folder = "Mobile Development";
-
-        articlePageObject.addArticleToMyList(name_of_folder, true);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.waitForTitleElement();
+            articlePageObject.addArticleToMyList(name_of_folder, true);
+        } else {
+            articlePageObject.waitForTitleOnIOS(first_article);
+            articlePageObject.addArticlesToMySaved();
+            articlePageObject.closeSyncAlert();
+        }
         articlePageObject.closeArticle();
-
         searchPageObject.initSearchInput();
 
-        String search_second_article = "Java";
-        searchPageObject.typeSearchLine(search_second_article);
-        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        articlePageObject.waitForTitleElement();
+        searchPageObject.typeSearchLine(second_article);
+        searchPageObject.clickByArticleWithSubstring(second_article);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.waitForTitleElement();
+            articlePageObject.addArticleToMyList(name_of_folder, false);
+        } else {
+            articlePageObject.waitForTitleOnIOS(second_article);
+            articlePageObject.addArticlesToMySaved();
+        }
 
-        String title_second_article = articlePageObject.getArticleTitle();
-
-        articlePageObject.addArticleToMyList(name_of_folder, false);
         articlePageObject.closeArticle();
-
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
-
         MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
-        myListsPageObject.openFolderByName(name_of_folder);
+        if (Platform.getInstance().isAndroid()) {
+            myListsPageObject.openFolderByName(name_of_folder);
+        }
+        myListsPageObject.swipeByArticleToDelete(second_article);
+        myListsPageObject.waitForArticleToDisappearByTitle(second_article);
+        myListsPageObject.waitForArticleToAppearByTitle(first_article);
+        myListsPageObject.clickByArticleInFolder(first_article);
 
-        myListsPageObject.swipeByArticleToDelete(title_first_article);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.waitForTitleElement();
+            String title_not_deleted_article = articlePageObject.getArticleTitle();
 
-        myListsPageObject.waitForArticleToDisappearByTitle(title_first_article);
-        myListsPageObject.waitForArticleToAppearByTitle(title_second_article);
-        myListsPageObject.clickByArticleInFolder(title_second_article);
-
-        articlePageObject.waitForTitleElement();
-        String title_not_deleted_article = articlePageObject.getArticleTitle();
-
-        assertEquals("Names of articles don't equal",
-                title_second_article,
-                title_not_deleted_article
-        );
+            assertEquals("Names of articles don't equal",
+                    first_article,
+                    title_not_deleted_article
+            );
+        } else {
+            articlePageObject.waitForTitleOnIOS(first_article);
+        }
     }
 }
